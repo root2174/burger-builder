@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 export const Main = styled.main`
 
     ${props =>
-      props.content &&
+      props.showcase &&
       css`
         margin-top: 16px
     `}
