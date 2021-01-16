@@ -5,10 +5,11 @@ import Button from '../../UI/Button/Button'
 
 const CheckoutSummary = (props) => {
   const BurgerDiv = styled.div`
-    width: 300px;
-    height: 300px;
+    width: 700px;
+    height: 450px;
     margin: auto;
-    margin-bottom: 150px;
+    margin-bottom: 10px;
+    overflow: auto;
   `
   const Div = styled.div`
     text-align: center;

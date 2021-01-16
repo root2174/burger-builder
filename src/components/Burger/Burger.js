@@ -18,10 +18,6 @@ const burger = (props) => {
         transformedIngredients = <p>Start adding ingredients!</p>
     }
 
-    console.log(transformedIngredients)
-    
-
-
     return (
         <Burger>
             <BurgerIngredient type="bread-top"/>
