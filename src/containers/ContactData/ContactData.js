@@ -3,32 +3,75 @@ import styled from 'styled-components'
 import Button from '../../components/UI/Button/Button'
 import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import Input from '../../components/UI/Input/Input'
 
   const ContactDiv = styled.div`
   margin: 20px auto;
-  width: 80%;
+  width: 60%;
   text-align: center;
   box-shadow: 0 2px 3px #ccc;
   border: 1px solid #eee;
   padding: 10px;
   box-sizing: border-box;
 
-  @media (min-width: 600px) {
+  @media (max-width: 600px) {
     width: 500px;
   }
 `
-
-  const Input = styled.input`
-    display: block;
-  `
 export default class ContactData extends Component {
 
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Name'
+        }
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Street'
+        }
+      },
+      zipCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Zip Code'
+        }
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country'
+        }
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Email'
+        }
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            {
+              value: 'fastest',
+              displayValue: 'Fastest'
+            },
+            {
+              value: 'cheapest',
+              displayValue: 'Cheapest'
+            },
+        ]
+        }
+      }
     },
     loading: false
   }
@@ -65,10 +108,10 @@ export default class ContactData extends Component {
   render() {
     let form = (
       <form>
-        <Input type="text" name="name" placeholder="Your name" />
-        <Input type="email" name="email" placeholder="Your email" />
-        <Input type="text" name="street" placeholder="Your street" />
-        <Input type="text" name="postal" placeholder="Your postal code" />
+        <Input elementType="..." elementConfig="..." value="..." />
+        <Input inputType='input' type="email" name="email" placeholder="Your email" />
+        <Input inputType='input' type="text" name="street" placeholder="Your street" />
+        <Input inputType='input' type="text" name="postal" placeholder="Your postal code" />
         <Button success onClick={this.orderHandler}>ORDER</Button>
       </form>
     );

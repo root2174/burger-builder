@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Burger from '../../Burger/Burger'
 import Button from '../../UI/Button/Button'
 
-const CheckoutSummary = (props) => {
   const BurgerDiv = styled.div`
     width: 700px;
     height: 450px;
@@ -20,6 +19,7 @@ const CheckoutSummary = (props) => {
       width: 500px;
     }
   `
+const CheckoutSummary = (props) => {
 
   return (
     <Div>
