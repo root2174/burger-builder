@@ -1,15 +1,17 @@
 import React from 'react'
-import {NavList, NavLink} from '../../../UI/Navigation/Items/Item/Item'
+import {NavList, Link} from '../../../UI/Navigation/Items/Item/Item'
 
 const Item = (props) => {
     return (
         <div>
             <NavList>
-                <NavLink 
-                    href={props.link} 
-                    active={props.active}>
+                <Link 
+                    to={props.link}
+                    exact={props.exact}
+                >
+                        
                         {props.children}
-                </NavLink>
+                </Link>
             </NavList>
         </div>
     )
