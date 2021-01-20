@@ -27,35 +27,40 @@ export default class ContactData extends Component {
         elementConfig: {
           type: 'text',
           placeholder: 'Name'
-        }
+        },
+        value: ''
       },
       street: {
         elementType: 'input',
         elementConfig: {
           type: 'text',
           placeholder: 'Street'
-        }
+        },
+        value: ''
       },
       zipCode: {
         elementType: 'input',
         elementConfig: {
           type: 'text',
           placeholder: 'Zip Code'
-        }
+        },
+        value: ''
       },
       country: {
         elementType: 'input',
         elementConfig: {
           type: 'text',
           placeholder: 'Country'
-        }
+        },
+        value: ''
       },
       email: {
         elementType: 'input',
         elementConfig: {
           type: 'email',
           placeholder: 'Email'
-        }
+        },
+        value: ''
       },
       deliveryMethod: {
         elementType: 'select',
@@ -69,8 +74,9 @@ export default class ContactData extends Component {
               value: 'cheapest',
               displayValue: 'Cheapest'
             },
-        ]
-        }
+          ]
+        },
+        value: ''
       }
     },
     loading: false
@@ -80,19 +86,14 @@ export default class ContactData extends Component {
     event.preventDefault()
     console.log(this.props.ingredients)
     this.setState({ loading: true })
+    const formData = {};
+    for (let formElementIdentifier in this.state.orderForm) {
+      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
+    }
     const order = {
         ingredients: this.props.ingredients,
-        price: this.state.totalPrice,
-        customer: {
-            name: 'Lucas Magalhães',
-            address: {
-                street: '21th Jump Street',
-                zipCode: '99999',
-                country: 'USA'
-            },
-            email: 'lucas@gmail.com'
-        },
-        deliveryMethod: 'fastest'
+        price: this.props.price,
+        orderData: formData
     }
     axios.post('/orders.json', order)
         .then(response => {
@@ -104,6 +105,17 @@ export default class ContactData extends Component {
             this.setState({ loading: false })
         })
   }
+  inputChangedHandler = (e, inputIdentifier) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm
+    }
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier]
+    }
+    updatedFormElement.value = e.target.value
+    updatedOrderForm[inputIdentifier] = updatedFormElement
+    this.setState({orderForm: updatedOrderForm})
+  }
 
   render() {
     const formElementsArray = [];
@@ -114,16 +126,17 @@ export default class ContactData extends Component {
       })
     }
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
         {formElementsArray.map(formElement => (
           <Input
             key={formElement.id}
             elementType={formElement.config.elementType} 
             elementConfig={formElement.config.elementConfig} 
             value={formElement.config.value}
+            onChange={(e) => this.inputChangedHandler(e, formElement.id)}
           />
         ))}
-        <Button success onClick={this.orderHandler}>ORDER</Button>
+        <Button success>ORDER</Button>
       </form>
     );
     if (this.state.loading) form = <Spinner />

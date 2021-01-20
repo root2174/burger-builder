@@ -28,13 +28,36 @@ const Label = styled.label`
 
 const Input = (props) => {
   let inputElement = null;
-
-  switch (props.inputType) {
+  switch (props.elementType) {
+  
     case ('input'):
-      inputElement = <InputElement {...props.elementConfig} value={props.value}/>
+      inputElement = <InputElement 
+                        {...props.elementConfig} 
+                        value={props.value}
+                        onChange={props.onChange}
+                      />
       break
     case ('textarea'):
-      inputElement = <InputElement as='textarea' {...props.elementConfig} value={props.value}/>
+      inputElement = <InputElement 
+                        as='textarea' 
+                        {...props.elementConfig} 
+                        value={props.value}
+                        onChange={props.onChange}
+                      />
+      break
+    case ('select'):
+      inputElement = (
+        <InputElement
+          InputElement as='select'
+          value={props.value}
+          onChange={props.onChange}
+        >
+          {props.elementConfig.options.map(option => (
+            <option key={option.value} value={option.value}>{option.displayValue}</option>
+          ))}
+        </InputElement>
+      )
+      
       break
     default:
       inputElement = <InputElement {...props.elementConfig} value={props.value}/>
