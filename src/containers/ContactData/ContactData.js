@@ -176,7 +176,6 @@ class ContactData extends Component {
 			orderForm: updatedOrderForm,
 			formIsValid: formIsValid
 		})
-		console.log(this.state.formIsValid)
 	}
 
 	render() {
