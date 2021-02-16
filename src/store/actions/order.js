@@ -1,7 +1,11 @@
 import {
 	PURCHASE_BURGER_SUCCESS,
 	PURCHASE_BURGER_FAIL,
-	PURCHASE_BURGER_START
+	PURCHASE_BURGER_START,
+	PURCHASE_INIT,
+	FETCH_ORDERS_START,
+	FETCH_ORDERS_SUCCESS,
+	FETCH_ORDERS_FAIL
 } from './actionsTypes'
 import axios from '../../axios-orders'
 
@@ -30,9 +34,50 @@ export const purchaseBurger = (orderData) => {
 		try {
 			dispatch(purchaseBurgerStart())
 			const res = await axios.post('/orders.json', orderData)
-			dispatch(purchaseBurgerSuccess(res.data, orderData))
+			dispatch(purchaseBurgerSuccess(res.data.name, orderData))
 		} catch (err) {
 			dispatch(purchaseBurgerFail(err))
+		}
+	}
+}
+
+export const purchaseInit = () => {
+	return {
+		type: PURCHASE_INIT
+	}
+}
+
+export const fetchOrdersSuccess = (orders) => {
+	return {
+		type: FETCH_ORDERS_SUCCESS,
+		orders: orders
+	}
+}
+
+export const fetchOrdersFail = (err) => {
+	return {
+		type: FETCH_ORDERS_FAIL,
+		err: err
+	}
+}
+
+export const fetchOrdersStart = () => {
+	return {
+		type: FETCH_ORDERS_START
+	}
+}
+
+export const fetchOrders = () => {
+	return async (dispatch) => {
+		try {
+			dispatch(fetchOrdersStart())
+			const res = await axios.get('/orders.json')
+			const orders = Object.values(res.data).map((order, i) => {
+				return { id: Object.keys(res.data)[i], ...order }
+			})
+			dispatch(fetchOrdersSuccess(orders))
+		} catch (err) {
+			dispatch(fetchOrdersFail(err))
 		}
 	}
 }
