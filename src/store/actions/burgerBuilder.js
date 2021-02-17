@@ -5,7 +5,6 @@ import {
 	INIT_INGREDIENTS_FAILED
 } from './actionsTypes'
 import axios from '../../axios-orders'
-// action creators
 
 export const addIngredient = (name) => {
 	return {
