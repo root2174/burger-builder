@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import Button from '../../components/UI/Button/Button'
@@ -47,6 +47,11 @@ const Input = styled.input`
 `
 
 export const Auth = (props) => {
+	const [isSignIn, setIsSignIn] = useState(false)
+
+	const switchMethod = () => {
+		setIsSignIn(!isSignIn)
+	}
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -59,7 +64,7 @@ export const Auth = (props) => {
 				.min(6, 'Password should be at least 6 characters long')
 		}),
 		onSubmit: (values) => {
-			props.onAuth(values.email, values.password)
+			props.onAuth(values.email, values.password, isSignIn)
 		}
 	})
 	return (
@@ -93,18 +98,21 @@ export const Auth = (props) => {
 						<div>{formik.errors.password}</div>
 					) : null}
 				</InputContainer>
-				<Button
-					success
+				<div
+					className="buttons-container"
 					style={{
-						padding: '0',
-						margin: 'auto',
-						position: 'absolute',
-						right: '50%'
+						display: 'flex',
+						alignContent: 'center',
+						flexDirection: 'column'
 					}}
-					type="submit"
 				>
-					SUBMIT
-				</Button>
+					<Button success type="submit">
+						SUBMIT
+					</Button>
+					<Button danger onClick={switchMethod}>
+						SWITCH TO {isSignIn ? 'SIGN UP' : 'SIGN IN'}
+					</Button>
+				</div>
 			</Form>
 		</FormDiv>
 	)
@@ -112,7 +120,8 @@ export const Auth = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onAuth: (email, password) => dispatch(actions.auth(email, password))
+		onAuth: (email, password, isSignIn) =>
+			dispatch(actions.auth(email, password, isSignIn))
 	}
 }
 
