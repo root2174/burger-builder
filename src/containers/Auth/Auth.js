@@ -109,7 +109,7 @@ export const Auth = (props) => {
 					<Button success type="submit">
 						SUBMIT
 					</Button>
-					<Button danger onClick={switchMethod}>
+					<Button type="button" danger onClick={switchMethod}>
 						SWITCH TO {isSignIn ? 'SIGN UP' : 'SIGN IN'}
 					</Button>
 				</div>
