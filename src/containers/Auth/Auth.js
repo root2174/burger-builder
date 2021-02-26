@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import Button from '../../components/UI/Button/Button'
+import Spinner from '../../components/UI/Spinner/Spinner'
 import styled, { css } from 'styled-components'
 import * as actions from '../../store/actions'
 import { connect } from 'react-redux'
@@ -68,54 +69,71 @@ export const Auth = (props) => {
 		}
 	})
 	return (
-		<FormDiv>
-			<Form onSubmit={formik.handleSubmit}>
-				<InputContainer>
-					<Input
-						id="email"
-						name="email"
-						type="email"
-						placeholder="Email"
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.email}
-					/>
-					{formik.touched.email && formik.errors.email ? (
-						<div>{formik.errors.email}</div>
-					) : null}
-				</InputContainer>
-				<InputContainer>
-					<Input
-						id="password"
-						name="password"
-						type="password"
-						placeholder="Password"
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.password}
-					/>
-					{formik.touched.password && formik.errors.password ? (
-						<div>{formik.errors.password}</div>
-					) : null}
-				</InputContainer>
-				<div
-					className="buttons-container"
-					style={{
-						display: 'flex',
-						alignContent: 'center',
-						flexDirection: 'column'
-					}}
-				>
-					<Button success type="submit">
-						SUBMIT
-					</Button>
-					<Button type="button" danger onClick={switchMethod}>
-						SWITCH TO {isSignIn ? 'SIGN UP' : 'SIGN IN'}
-					</Button>
-				</div>
-			</Form>
-		</FormDiv>
+		<>
+			{props.loading && <Spinner />}
+			{!props.loading && (
+				<FormDiv>
+					<Form onSubmit={formik.handleSubmit}>
+						<InputContainer>
+							<Input
+								id="email"
+								name="email"
+								type="email"
+								placeholder="Email"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.email}
+							/>
+							{formik.touched.email && formik.errors.email ? (
+								<div>{formik.errors.email}</div>
+							) : null}
+						</InputContainer>
+						<InputContainer>
+							<Input
+								id="password"
+								name="password"
+								type="password"
+								placeholder="Password"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={formik.values.password}
+							/>
+							{formik.touched.password && formik.errors.password ? (
+								<div>{formik.errors.password}</div>
+							) : null}
+						</InputContainer>
+						<div
+							className="buttons-container"
+							style={{
+								display: 'flex',
+								alignContent: 'center',
+								flexDirection: 'column'
+							}}
+						>
+							<Button success type="submit">
+								SUBMIT
+							</Button>
+							<Button type="button" danger onClick={switchMethod}>
+								SWITCH TO {isSignIn ? 'SIGN UP' : 'SIGN IN'}
+							</Button>
+							{props.err && (
+								<p style={{ color: 'red', fontWeight: 'bold' }}>
+									{props.err.message}
+								</p>
+							)}
+						</div>
+					</Form>
+				</FormDiv>
+			)}
+		</>
 	)
+}
+
+const mapStateToProps = (state) => {
+	return {
+		loading: state.auth.loading,
+		err: state.auth.err
+	}
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -125,4 +143,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Auth)
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)
