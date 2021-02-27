@@ -67,11 +67,11 @@ export const fetchOrdersStart = () => {
 	}
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
 	return async (dispatch) => {
 		try {
 			dispatch(fetchOrdersStart())
-			const res = await axios.get('/orders.json')
+			const res = await axios.get(`/orders.json?auth=${token}`)
 			const orders = Object.values(res.data).map((order, i) => {
 				return { id: Object.keys(res.data)[i], ...order }
 			})
