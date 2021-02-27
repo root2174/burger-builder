@@ -7,19 +7,19 @@ import DrawerToggle from '../../UI/Navigation/SideDrawer/DrawerToggle'
 import Line from '../../UI/Navigation/SideDrawer/Line'
 
 const toolbar = (props) => {
-    return (
-        <Header>
-            <DrawerToggle onClick={props.drawerToggleClicked}>
-                <Line/>
-                <Line/>
-                <Line/>
-            </DrawerToggle>
-            <Logo DesktopOnly height="80%"/>
-            <Nav>
-                <NavigationItems DesktopOnly/>
-            </Nav>            
-        </Header>
-    )
+	return (
+		<Header>
+			<DrawerToggle onClick={props.drawerToggleClicked}>
+				<Line />
+				<Line />
+				<Line />
+			</DrawerToggle>
+			<Logo DesktopOnly height="80%" />
+			<Nav>
+				<NavigationItems isAuthenticated={props.isAuth} DesktopOnly />
+			</Nav>
+		</Header>
+	)
 }
 
 export default toolbar

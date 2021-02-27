@@ -10,7 +10,7 @@ export const authStart = () => {
 export const authSuccess = (token, userId) => {
 	return {
 		type: actionTypes.AUTH_SUCCESS,
-		idToken: token,
+		token: token,
 		userId: userId
 	}
 }
@@ -49,12 +49,17 @@ export const auth = (email, password, isSignIn) => {
 				password,
 				returnSecureToken: true
 			})
-			console.log(res)
 			dispatch(authSuccess(res.data.idToken, res.data.localId))
 			dispatch(checkAuthTimeout(res.data.expiresIn))
 		} catch (err) {
-			console.log(err)
 			dispatch(authFail(err.response.data.error))
 		}
+	}
+}
+
+export const setAuthRedirectPath = (path) => {
+	return {
+		type: actionTypes.SET_AUTH_REDIRECT_PATH,
+		path: path
 	}
 }

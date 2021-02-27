@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import Button from '../../components/UI/Button/Button'
@@ -6,6 +6,7 @@ import Spinner from '../../components/UI/Spinner/Spinner'
 import styled, { css } from 'styled-components'
 import * as actions from '../../store/actions'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 const Form = styled.form`
 	margin: auto;
@@ -50,6 +51,12 @@ const Input = styled.input`
 export const Auth = (props) => {
 	const [isSignIn, setIsSignIn] = useState(false)
 
+	useEffect(() => {
+		if (!props.buildingBurger && props.authRedirectPath !== '/') {
+			props.onSetAuthRedirectPath()
+		}
+	}, [props, props.authRedirectPath, props.buildingBurger])
+
 	const switchMethod = () => {
 		setIsSignIn(!isSignIn)
 	}
@@ -70,6 +77,7 @@ export const Auth = (props) => {
 	})
 	return (
 		<>
+			{props.isAuthenticated && <Redirect to={props.authRedirectPath} />}
 			{props.loading && <Spinner />}
 			{!props.loading && (
 				<FormDiv>
@@ -132,14 +140,18 @@ export const Auth = (props) => {
 const mapStateToProps = (state) => {
 	return {
 		loading: state.auth.loading,
-		err: state.auth.err
+		err: state.auth.err,
+		isAuthenticated: state.auth.token !== null,
+		buildingBurger: state.burgerBuilder.building,
+		authRedirectPath: state.auth.authRedirectPath
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onAuth: (email, password, isSignIn) =>
-			dispatch(actions.auth(email, password, isSignIn))
+			dispatch(actions.auth(email, password, isSignIn)),
+		onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
 	}
 }
 

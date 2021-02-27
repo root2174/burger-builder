@@ -9,7 +9,8 @@ import { updateObject } from '../utils'
 const initialState = {
 	ingredients: null,
 	totalPrice: 4,
-	error: false
+	error: false,
+	building: false
 }
 
 const INGREDIENT_PRICE = {
@@ -31,7 +32,8 @@ const reducer = (state = initialState, action) => {
 			)
 			const updatedState = {
 				ingredients: updatedIngredients,
-				totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
+				totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName],
+				building: true
 			}
 			return updateObject(state, updatedState)
 		case REMOVE_INGREDIENT:
@@ -41,14 +43,16 @@ const reducer = (state = initialState, action) => {
 					...state.ingredients,
 					[action.ingredientName]: state.ingredients[action.ingredientName] - 1
 				},
-				totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
+				totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName],
+				building: true
 			}
 		case SET_INGREDIENTS:
 			return {
 				...state,
 				error: false,
 				totalPrice: 4,
-				ingredients: action.ingredients
+				ingredients: action.ingredients,
+				building: false
 			}
 		case INIT_INGREDIENTS_FAILED:
 			return {
