@@ -8,7 +8,7 @@ const sideDrawer = (props) => {
 	return (
 		<>
 			<Backdrop show={props.open} onClick={props.closed} />
-			<SideDrawer open={props.open} close={!props.open}>
+			<SideDrawer open={props.open} close={!props.open} onClick={props.closed}>
 				<Logo height="11%" />
 				<nav>
 					<NavigationItems
